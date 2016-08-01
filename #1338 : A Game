@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+int n;//数组长度
+int nums[1010],sum[1010];
+int dp[1010][1010];//dp[i][j]表示当前以i开头，以j为长度的数组中最大和
+int main()
+{
+    scanf("%d", &n);
+    for(int i=1;i<=n;++i){
+        scanf("%d",&nums[i]);
+        sum[i]=sum[i-1]+nums[i];
+        dp[i][1]=nums[i];//初始化 dp[i][1]表示以i开始，1长度数组的最大和为nums[i]
+    }
+    for(int j=2;j<=n;++j)//从长度为2开始
+        for(int i=1;i<=n;++i)
+            if (i+j-1<=n)
+               dp[i][j]=max(sum[i+j-1]-sum[i-1]-dp[i+1][j-1],sum[i+j-1]-sum[i-1]-dp[i][j-1]);//动态规划状态转移
+    printf("%d\n",dp[1][n]);
+    return 0;
+}
